@@ -7,28 +7,14 @@ window['ai_edge_gallery_get_result'] = async (dataStr, secret) => {
       return JSON.stringify({ error: 'URL must use https://' });
     }
 
-    // Auth token from secret parameter
-    const authToken = secret || '';
-    if (!authToken) {
-      return JSON.stringify({ error: 'No auth token provided. Please enter your access token when adding this skill.' });
-    }
-
     const proxyUrl = 'https://gemma-skills-fetch.nyvins.workers.dev/';
 
-    const fetchOptions = {
-      method,
+    const response = await fetch(proxyUrl, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Auth-Token': authToken,
-        ...headers
-      }
-    };
-    if (body && method !== 'GET') {
-      fetchOptions.body = typeof body === 'string' ? body : JSON.stringify(body);
-    }
-
-    const response = await fetch(proxyUrl, {
-      ...fetchOptions,
+        'X-Auth-Token': secret || ''
+      },
       body: JSON.stringify({ url, method, headers, body })
     });
 
@@ -36,7 +22,7 @@ window['ai_edge_gallery_get_result'] = async (dataStr, secret) => {
     let result;
 
     if (response.status === 401) {
-      return JSON.stringify({ error: 'Invalid access token. Please check your token and try again.' });
+      return JSON.stringify({ error: 'Access denied. Please check your access token.' });
     }
 
     if (contentType.includes('application/json')) {
@@ -46,14 +32,6 @@ window['ai_edge_gallery_get_result'] = async (dataStr, secret) => {
       if (result.length > 50000) {
         result = result.substring(0, 50000) + '\n[output truncated]';
       }
-    }
-
-    if (!response.ok) {
-      return JSON.stringify({
-        error: `Proxy error: HTTP ${response.status}`,
-        status: response.status,
-        result
-      });
     }
 
     return JSON.stringify({ result });

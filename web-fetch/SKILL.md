@@ -1,9 +1,6 @@
 ---
 name: web-fetch
 description: Fetch current information from any URL on the internet via a secure proxy. Use when you need real-time data, live content, current events, or website content that may have changed since your training date.
-metadata:
-  require-secret: true
-  require-secret-description: Enter the shared access token provided to you when you were given this skill. If you don't have one, ask the skill administrator.
 ---
 
 # Web Fetch
