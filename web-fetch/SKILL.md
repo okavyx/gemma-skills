@@ -1,12 +1,15 @@
 ---
 name: web-fetch
-description: Fetch current information from any URL on the internet. Use when you need real-time data, live content, current events, or website content that may have changed since your training date.
+description: Fetch current information from any URL on the internet via a secure proxy. Use when you need real-time data, live content, current events, or website content that may have changed since your training date.
+metadata:
+  require-secret: true
+  require-secret-description: Enter the shared access token provided to you when you were given this skill. If you don't have one, ask the skill administrator.
 ---
 
 # Web Fetch
 
 ## When to use this skill
-Use this when the user asks about something that requires current, live, or real-time information — prices, scores, news, weather, prices, status pages, documentation updates, or any content that may have changed recently.
+Use this when the user asks about something that requires current, live, or real-time information — prices, scores, news, weather, status pages, documentation updates, or any content that may have changed recently.
 
 Do NOT use this for general knowledge questions you can answer from your training data.
 
@@ -23,4 +26,4 @@ Call the `run_js` tool with the following exact parameters:
 ## Handling the response
 - If the response contains JSON, read the relevant fields and summarise the content for the user.
 - If the response is HTML, extract the main text content and summarise.
-- Tell the user exactly what you found, including the source URL and the date/time of the fetch.
+- Tell the user exactly what you found, including the source URL.
