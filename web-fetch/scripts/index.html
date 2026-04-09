@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body>
+<script>
+window['ai_edge_gallery_get_result'] = async (data) => {
+  try {
+    const jsonData = JSON.parse(data);
+    const { url, method = 'GET', headers = {}, body } = jsonData;
+
+    if (!url || !url.startsWith('https://')) {
+      return JSON.stringify({ error: 'URL must be provided and must use https://' });
+    }
+
+    const options = { method, headers };
+    if (body && method !== 'GET') {
+      options.body = typeof body === 'string' ? body : JSON.stringify(body);
+    }
+
+    const response = await fetch(url, options);
+    const contentType = response.headers.get('content-type') || '';
+    let result;
+
+    if (contentType.includes('application/json')) {
+      result = await response.json();
+    } else {
+      result = await response.text();
+      if (result.length > 50000) {
+        result = result.substring(0, 50000) + '\n[output truncated]';
+      }
+    }
+
+    return JSON.stringify({
+      status: response.status,
+      statusText: response.statusText,
+      url: response.url,
+      contentType,
+      result
+    });
+  } catch (e) {
+    return JSON.stringify({ error: `Fetch failed: ${e.message}` });
+  }
+};
+</script>
+</body>
+</html>
