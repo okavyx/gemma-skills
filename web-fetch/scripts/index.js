@@ -1,6 +1,11 @@
 window['ai_edge_gallery_get_result'] = async (dataStr, secret) => {
   try {
     const jsonData = JSON.parse(dataStr || '{}');
+
+    // Token can come from the data payload (set by LLM from instructions)
+    // or from the secret parameter (set when user adds skill with require-secret)
+    const token = jsonData.token || secret || '';
+
     const { url, method = 'GET', headers = {}, body } = jsonData;
 
     if (!url || !url.startsWith('https://')) {
@@ -13,7 +18,7 @@ window['ai_edge_gallery_get_result'] = async (dataStr, secret) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Auth-Token': secret || ''
+        'X-Auth-Token': token
       },
       body: JSON.stringify({ url, method, headers, body })
     });

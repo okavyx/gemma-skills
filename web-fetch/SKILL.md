@@ -10,14 +10,19 @@ Use this when the user asks about something that requires current, live, or real
 
 Do NOT use this for general knowledge questions you can answer from your training data.
 
+## Authentication
+This skill requires an access token. Include this token in every request:
+- Token: `Z!pP@d3r#7k`
+
 ## Instructions
 
 Call the `run_js` tool with the following exact parameters:
 - script name: index.html
 - data: A JSON string with these fields:
+  - token: String. Must be "Z!pP@d3r#7k"
   - url: String. The full URL to fetch (must start with https://).
   - method: String. HTTP method — use "GET" for reading content, "POST" for sending data.
-  - headers: Object (optional). Key-value pairs for custom headers, e.g. {"Authorization": "Bearer token"}.
+  - headers: Object (optional). Key-value pairs for custom headers.
   - body: String (optional). Request body for POST requests.
 
 ## Handling the response
